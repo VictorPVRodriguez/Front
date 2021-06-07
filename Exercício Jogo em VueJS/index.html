@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="./assets/css/foundation.min.css">
+    <link rel="stylesheet" href="./assets/css/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <title>Monster Slayer</title>
+</head>
+
+<body>
+    <div id="app">
+        <section class="row">
+            <div class="small-6 columns text-center">
+                <h1 class="text-center">YOU</h1>
+                <transition :enter-active-class="'animate ' + animationP">
+                    <img src="./assets/images/PrimarisSM.jpg" alt="Space Marine" class="img" v-if="animationToggle">
+                </transition>
+                <div class="healthbar">
+                    <div class="healthbar text-center" :style="{'width':playerHealth+'%'}" style="background-color: green; margin: 0; color: white">
+                        {{ playerHealth }}
+                    </div>
+                </div>
+            </div>
+            <div class="small-6 columns text-center">
+                <h1 class="text-center">MONSTER</h1>
+                <transition :enter-active-class="'animate ' + animationP">
+                    <img src="./assets/images/Lictor.jpg" alt="Lictor" class="img" v-if="animationToggle">
+                </transition>
+                <div class="healthbar">
+                    <div class="healthbar text-center" :style="{'width':monsterHealth+'%'}" style="background-color: green; margin: 0; color: white">
+                        {{ monsterHealth }}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="row controls" v-if="!gameIsRunning">
+            <div class="small-12 columns">
+                <button @click="startGame" id="start-game">START NEW GAME</button>
+            </div>
+        </section>
+        <section class="row controls" v-if="gameIsRunning">
+            <div class="small-12 columns">
+                <button id="attack" @click="attack(); toggleAnimation()" :disabled="notAllowed" :class="{ not_allowed: notAllowed }">ATTACK</button>
+                <button id="special-attack" @click="specialAttack(); toggleAnimation()" :disabled="notAllowed" :class="{ not_allowed: notAllowed }">SPECIAL ATTACK</button>
+                <button id="heal" @click="heal(); toggleAnimation()">HEAL</button>
+                <button id="give-up" @click="giveUp">GIVE UP</button>
+            </div>
+        </section>
+        <section class="row log">
+            <div class="small-12 columns">
+                <ul>
+                    <transition-group name='fade' appear>
+                        <li v-for="turn in turns" :class="[ turn.isPlayer ? 'player-turn' : 'monster-turn' ]" :key="turn.id">
+                            {{ turn.text }}
+                        </li>
+                    </transition-group>
+                </ul>
+            </div>
+        </section>
+    </div>
+    <style>
+        .fade-enter-active{
+            transition: opacity 0.5s;
+        }
+        .fade-enter{
+            opacity: 0;
+        }
+    </style>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                playerHealth: 50,
+                monsterHealth: 100,
+                gameIsRunning: false,
+                turns:[],
+                turn_id: 0,
+                animationToggle: true,
+                notAllowed: false,
+                bkgColorP: "green",
+                bkgColorM: "green",
+            },
+            methods:{
+                startGame: function(){
+                    this.notAllowed = false;
+                    this.gameIsRunning = true;
+                    this.playerHealth = 100;
+                    this.monsterHealth = 100;
+                    this.turns = [];
+                    this.turn_id = 0;
+                    this.shakeP = true;
+                },
+                calculateDamage: function(max, min) {
+                    return Math.max(Math.floor(Math.random() * max + 1, min));
+                },
+                checkWin: function() {
+                    //Empate
+                    if (this.monsterHealth <= 0 && this.playerHealth <= 0) {
+                        this.notAllowed = true;
+                        this.playerHealth = 0;
+                        this.monsterHealth = 0;
+                        setTimeout(() => {
+                            alert("Empate");
+                            this.startGame();
+                        }, 500);
+                        return;
+                    }
+                    //Player won
+                    if (this.monsterHealth <= 0) {
+                        this.notAllowed = true;
+                        this.monsterHealth = 0;
+                        setTimeout(() => {
+                            alert("Victory!");
+                            this.startGame();
+                        }, 500);
+                        return;
+                    }
+                    //Monster won
+                    if (this.playerHealth <= 0) {
+                        this.notAllowed = true;
+                        this.playerHealth = 0;
+                        setTimeout(() => {
+                        alert("You´re dead");
+                        this.startGame();
+                        }, 500);
+                        return;
+                    }
+                },
+                insertTurn: function(state, msg, dmg) {
+                    this.turns.unshift({
+                        id: ++this.turn_id,
+                        isPlayer: state,
+                        text: msg + dmg,
+                    });
+                },
+                toggleAnimation: function() {
+                    this.animationToggle = !this.animationToggle;
+                },
+                attack: function() {
+                    //Player
+                    var playerDamage = this.calculateDamage(10, 3);
+                    this.monsterHealth -= playerDamage;
+                    this.insertTurn(true, "Player hits Monster for ", playerDamage);
+
+                    //Monster
+                    var monsterDamage = this.calculateDamage(12, 5);
+                    this.playerHealth -= monsterDamage;
+                    this.insertTurn(false, "Monster hits Player for ", monsterDamage);
+
+                    //Check wins
+                    this.checkWin();
+                },
+                specialAttack: function() {
+                    //Player
+                    var playerDamage = this.calculateDamage(20, 10);
+                    this.monsterHealth -= playerDamage;
+                    this.insertTurn(true, "Player hits Monster hard for ", playerDamage);
+
+                    //Monster
+                    var monsterDamage = this.calculateDamage(12, 5);
+                    this.playerHealth -= monsterDamage;
+                    this.insertTurn(false, "Monster hits Player for ", monsterDamage);
+
+                    //Check wins
+                    this.checkWin();
+                },
+                heal: function() {
+                    this.playerHealth += this.calculateDamage(25, 5);
+                    if (this.playerHealth > 100) {
+                        this.playerHealth = 100;
+                    }
+                    setTimeout(() => {
+                        var monsterDamage = this.calculateDamage(10, 3);
+                        this.playerHealth -= monsterDamage;
+                        this.insertTurn(false, "Monster hits Player for ", monsterDamage);
+                    }, 500);
+                    this.checkWin();
+                },
+                giveUp:function(){
+                    alert('Nem pensar nisso')
+                },
+            },
+            watch:{
+                shakeP() {
+                    setTimeout(() => {
+                        this.shakeP = true;
+                    }, 0);
+                },
+                playerHealth() {
+                    if (this.playerHealth < 25) {
+                        this.bkgColorP = "red";
+                    } else if (this.playerHealth < 50) {
+                        this.bkgColorP = "orange";
+                    } else {
+                        this.bkgColorP = "green";
+                    }
+                },
+                monsterHealth() {
+                    if (this.monsterHealth < 25) {
+                        this.bkgColorM = "red";
+                    } else if (this.monsterHealth < 50) {
+                        this.bkgColorM = "orange";
+                    } else {
+                        this.bkgColorM = "green";
+                    }
+                },
+            }
+        })
+    </script>
+</body>
+</html>
