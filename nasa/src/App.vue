@@ -4,7 +4,11 @@
       <div id="nav">
         <router-link to="/">Home</router-link> |
         <router-link to="/about">About</router-link> |
-        <router-link to="/breeds">Breeds</router-link>
+        <router-link to="/breeds">Breeds</router-link> |
+        <router-link to="/fav">Favoritos</router-link> |
+        <router-link to="/signup">Signup</router-link> |
+        <router-link to="/login">Login</router-link> |
+        <router-link to="/admin">Venda</router-link>
       </div>
     </appCard>
     <router-view/>
@@ -24,6 +28,7 @@ export default {
   mounted(){
     this.$store.dispatch('carregaInfo')
     this.$store.dispatch('carregaFavoritos')
+    this.$store.dispatch('carregaVenda')
   }
 }
 </script>

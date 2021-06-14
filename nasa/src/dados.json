@@ -1,0 +1,27 @@
+[
+    {
+      "nome": "akita",
+      "preco": 800,
+      "foto": "https://images.dog.ceo/breeds/akita/Akita_Inu_dog.jpg"
+    },
+    {
+      "nome": "husky",
+      "preco": 600,
+      "foto": "https://images.dog.ceo/breeds/akita/Akita_Inu_in_Riga_1.jpg"
+    },
+    {
+      "nome": "akita",
+      "preco": 800,
+      "foto": "https://images.dog.ceo/breeds/akita//Akita_Inu_dog.jpg"
+    },
+    {
+      "nome": "akita",
+      "preco": 800,
+      "foto": "https://images.dog.ceo/breeds/akita//Akita_Inu_dog.jpg"
+    },
+    {
+      "nome": "boxer",
+      "preco": 800,
+      "foto": "https://images.dog.ceo/breeds/akita//Akita_Inu_dog.jpg"
+    }
+]
