@@ -24,16 +24,15 @@ export default {
     },
     methods:{
         submit(){
-            axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAIQdZRgQfars_XsSvs5Z5Eu4S7tGchyCA',
-            {
+            axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAIQdZRgQfars_XsSvs5Z5Eu4S7tGchyCA',{
                 email:this.email,
                 password: this.password,
                 returnSecureToken: true
             }).then(
                 res => this.$store.commit('setUser',res.data),
-                this.$router.push("/")
+                this.$router.push('/Favorites')
             ).catch(
-                res => console.log(res)
+                res => console.log("Fail",res)
             )
         }
     }

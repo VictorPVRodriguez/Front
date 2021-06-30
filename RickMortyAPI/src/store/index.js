@@ -25,8 +25,8 @@ export default new Vuex.Store({
     LoadInfo(state, item){
       state.info = item
     },
-    iniciaFavoritos(state, lista){
-      state.favoritos = lista
+    iniciaFavoritos(state, list){
+      state.favoritos = list
     }
   },
   actions: {

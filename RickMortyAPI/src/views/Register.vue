@@ -29,7 +29,10 @@ export default {
         password: this.password,
         returnSecureToken: true,
       })
-      .then((res) => console.log(res))
+      .then((res) => { 
+        console.log(res),
+        this.$router.push('/')
+      })
       .catch((res) => console.log("Fail",res));
     },
   },
