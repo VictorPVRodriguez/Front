@@ -1,23 +1,23 @@
 <template>
     <div class="form">
-        <h3>:: Produtos à venda ::</h3>
+        <h3>:: Goods for sale ::</h3>
         <form @submit.prevent="submit">
-            <span>Produto: </span>
+            <span>Product: </span>
             <input type="nome" v-model='nome'>
             <br><br>
-            <span>Categoria: </span>
+            <span>Category: </span>
             <input type="categoria" v-model='categoria'>
             <br><br>
-            <span>Preço: </span>
+            <span>Price: </span>
             <input type="preco" v-model='preco'>
             <br><br>
-            <span>Desconto: </span>
+            <span>Discount: </span>
             <input type="desconto" v-model='desconto'>
             <br><br>
             <span>Stock: </span>
             <input type="stock" v-model='stock'>
             <br><br>
-            <button type="submit">Enviar</button>
+            <button type="submit">Send</button>
         </form>
     </div>
 </template>
@@ -27,19 +27,22 @@ export default {
     data(){
         return{
             nome:'',
-            preco:''
+            categoria:'',
+            preco:'',
+            desconto:'',
+            stock:''
         }
     },
     methods:{
         submit(){
-            axios.put(''+ this.$store.state.user.idToken,
-            [...this.$store.state.venda,{
+            axios.put('http://localhost:3000/produtos'+this.$store.state.user.idToken,
+            [...this.$store.state.sells,{
                 nome: this.nome,
+                categoria: this.categoria,
                 preco: this.preco,
-                foto: '',
-                email: this.$store.user.email
-            }])
-                .then(
+                desconto: this.desconto,
+                stock: this.stock
+            }]).then(
                     res => console.log(res)
                 )
                 .catch(

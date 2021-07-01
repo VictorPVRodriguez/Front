@@ -6,8 +6,8 @@ import axios from "axios"
 export default new Vuex.Store({
   state: {
     info: [],
-    carro:[],
-    venda:[],
+    cart:[],
+    sells:[],
     user:null
   },
   mutations: {
@@ -15,26 +15,26 @@ export default new Vuex.Store({
       state.user=user
     },
     selectProduct(state, item){
-      state.favoritos = [item, ...state.favoritos]
-      localStorage.setItem('favoritoLocal', JSON.stringify(state.favoritos))
+      state.cart = [item, ...state.cart]
+      localStorage.setItem('sellLocal', JSON.stringify(state.sells))
     },
     deselectProduct(state, index){
-      state.favoritos.splice(index,1)
-      localStorage.setItem('favoritoLocal', JSON.stringify(state.favoritos))
+      state.cart.splice(index,1)
+      localStorage.setItem('sellLocal', JSON.stringify(state.sells))
     },
     loadProduts(state, item){
       state.info=item
     },
-    startList(state, lista){
-      state.carro=lista
+    startList(state, list){
+      state.info=list
     },
-    startSells(state, lista){
-      state.venda=lista
+    startSells(state, list){
+      state.sells=list
     }
   },
   actions: {
     loadSells({commit}){
-      axios.get('')
+      axios.get('http://localhost:3000/produtos')
       .then(
         res => commit('startSells',res.data)
       )
@@ -102,7 +102,7 @@ export default new Vuex.Store({
       return [...new Set (state.venda.map(x=>x.nome))]
         .map(res => { 
           return{
-            'nome': res,
+            'nome': res.data.results.nome,
             'foto' : state.info.find(item => item.name === res).photo
           }
         })

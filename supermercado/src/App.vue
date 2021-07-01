@@ -1,14 +1,15 @@
 <template>
   <div id="app">
+    <router-link to="/"><img src="./assets/walmart.png" width="560" height="300"></router-link>
     <div id="nav">
-      <router-link to="/"><img src="./assets/walmart.png" width="480" height="250"></router-link>
       <usercard cor="#000000">
-        <router-link to="/Carrinho">Carrinho</router-link> |
-        <router-link to="/Login">Login</router-link> |
-        <router-link to="/Signup">Signup</router-link>
+        <router-link to="/Cart">Cart</router-link> |
+        <router-link to="/Login">Log in</router-link> |
+        <router-link to="/Signup">Sign up</router-link> |
+        <router-link to="/Admin">Admin</router-link>
       </usercard>
       <app-card cor="#048eff">
-        <router-link to="/Produtos">Todos os produtos</router-link>
+        <router-link to="/Products">See all products</router-link>
       </app-card>
     </div>
     <router-view/>
@@ -32,7 +33,7 @@ body{
   background-color: rgb(255, 255, 255);
 }
 #app {
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

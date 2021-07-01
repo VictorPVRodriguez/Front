@@ -2,10 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
 import Home from '../views/Home.vue'
-import Produtos from '../views/Produtos.vue'
-import Encomenda from '../views/Encomenda.vue'
-import Carrinho from '../views/Carrinho.vue'
+import Products from '../views/Products.vue'
+import Cart from '../views/Cart.vue'
 import Login from '../views/Login.vue'
+import Form from '../views/Form.vue'
 import Signup from '../views/Signup.vue'
 import Admin from '../views/Admin.vue'
 import Selectcar from '../views/Selectcar.vue'
@@ -19,16 +19,12 @@ const routes = [
     component: Home
   },
   {
-    path: '/Produtos',
-    component: Produtos
+    path: '/Products',
+    component: Products
   },
   {
-    path: '/Encomenda',
-    component: Encomenda
-  },
-  {
-    path: '/Carrinho',
-    component: Carrinho,
+    path: '/Cart',
+    component: Cart,
     beforeEnter: (to, from, next) => {
       if(!store.state.user){
         next('/login')
@@ -66,6 +62,10 @@ const routes = [
   {
     path: '/Signup',
     component: Signup
+  },
+  {
+    path: '/Form',
+    component: Form
   }
 ]
 

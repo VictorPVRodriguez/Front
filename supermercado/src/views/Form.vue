@@ -1,20 +1,26 @@
 <template>
-  <div class="signup">
-    <h3>:: Sign Up ::</h3>
+  <div class="formulary">
+    <h3>:: Your personal information ::</h3>
     <form @submit.prevent="submit">
       <div class="form-group">
-        <span>Username</span>
-        <input type="username" class="form-control form-control-lg" v-model="username"/>
+        <span>Name</span>
+        <input type="nome" class="form-control form-control-lg" v-model="name"/>
       </div>
       <div class="form-group">
-        <span>Password</span>
-        <input type="password" class="form-control form-control-lg" v-model="password"/>
+        <span>NIF</span>
+        <input type="contribuinte" class="form-control form-control-lg" v-model="nif"/>
+      </div>
+      <div class="form-group">
+        <span>Telefone number</span>
+        <input type="telemovel" class="form-control form-control-lg" v-model="telefone"/>
+      </div>
+      <div class="form-group">
+        <span>Location</span>
+        <input type="morada" class="form-control form-control-lg" v-model="morada"/>
       </div>
       <button type="submit" class="btn btn-dark btn-lg btn-block">
         Sign In
       </button>
-      <br><br>
-      <span>Do you have an account? </span><a href="login">Log in</a>
     </form>
     <div class="socialicons">
       <ul>
@@ -32,19 +38,23 @@ const axios = require("axios");
 export default {
   data() {
     return {
-      username:"",
-      password:""
+      nome:"",
+      contribuinte:"",
+      telemovel:"",
+      morada:""
     }
   },
   methods: {
     submit() {
-      axios.post('http://localhost:3000/conta',{
-        username: this.username,
-        password: this.password,
-        returnSecureToken:true
+      axios.post('http://localhost:3000/cliente',{
+        nome: this.nome,
+        contribuinte: this.contribuinte,
+        telemovel: this.telemovel,
+        morada:this.morada
       }).then((res) => {
           console.log(res),
-          this.$router.push('/Form')
+          alert("Sign up successfully"),
+          this.$router.push('/cart')
         })
         .catch((res) => console.log("Fail",res))
     }
@@ -52,7 +62,7 @@ export default {
 }
 </script>
 <style scoped>
-.signup {
+.formulary {
   display:flex;
   justify-content: center;
   align-items: center;

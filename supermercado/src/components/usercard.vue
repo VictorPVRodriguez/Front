@@ -9,7 +9,7 @@ export default {
     props: {
         cor: String,
         largura: {
-            default: '16%',
+            default: '20%',
             type: String
         }
     }

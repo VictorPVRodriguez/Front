@@ -1,19 +1,19 @@
 <template>
   <div style="display:flex">
-    <div class="breed">
+    <div class="cart">
       <div v-for="(item, index) in resultados" :key="index">
           <app-card lagura="520px">
-          {{item}} &emsp;<button @click="marcaFavoritos(item)">&#9829;</button>
+            {{item}} &emsp;<button @click="selectProduct(item)">&#9829;</button>
           <br><br>
           <img :src="item" width="500" alt="">
           </app-card>
       </div>
     </div>
-    <app-card class="favoritos" cor="grey">
-      <p>FAVORITOS</p>
-      <div v-for="(item, index) in $store.state.favoritos" :key="index">
+    <app-card class="cart" cor="blue">
+      <p>Your car</p>
+      <div v-for="(item, index) in $store.state.cart" :key="index">
         <app-card cor="white" >
-          <img :src="item" width="90" alt="" @click="desmarcaFavoritos(index)">
+          <img :src="item" width="90" alt="" @click="deselectProduct(index)">
         </app-card>
       </div>
     </app-card>
@@ -35,17 +35,17 @@ export default {
     return{
       resultados: "",
       pesquisa: "",
-      favoritos: []
+      cart: []
     }
   },
   methods:{
-    marcaFavoritos(item){
-      this.$store.commit('marcaFavoritos',item)
+    selectProduct(item){
+      this.$store.commit('selectProduct',item)
     },
-    desmarcaFavoritos(index){
-      this.$store.commit('desmarcaFavoritos',index)
+    deselectProduct(index){
+      this.$store.commit('deselectProduct',index)
     },
-    LoadInfo(query){
+    loadProduts(query){
       axios.get(''+query)
         .then(
           res => {
@@ -63,7 +63,7 @@ export default {
     }
   },
   created (){
-    this.LoadInfo(this.$route.params.id);
+    this.loadProduts(this.$route.params.id);
   }
 }
 </script>
